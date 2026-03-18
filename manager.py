@@ -1,21 +1,18 @@
 import threading
 from bot import run_bot
 
-active_bots = {}
+bots = {}
 
 def start_bot(username):
-    if username in active_bots:
+    if username in bots:
         return
 
-    thread = threading.Thread(target=run_bot, args=(username,))
-    thread.daemon = True
-    thread.start()
+    t = threading.Thread(target=run_bot, args=(username,))
+    t.daemon = True
+    t.start()
 
-    active_bots[username] = thread
-    print(f"Bot started for {username}")
+    bots[username] = t
 
 def stop_bot(username):
-    # Nota: TikTokLive no tiene stop limpio fácil
-    if username in active_bots:
-        del active_bots[username]
-        print(f"Bot stopped for {username}")
+    if username in bots:
+        del bots[username]
