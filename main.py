@@ -8,16 +8,23 @@ def home():
     return {"status": "ok"}
 
 @app.post("/start-bot")
-def start(data: dict):
+def api_start_bot(data: dict):
     username = data.get("username")
+
     if not username:
         raise HTTPException(status_code=400, detail="Username required")
 
     start_bot(username)
-    return {"message": "Bot started"}
+
+    return {"message": f"Bot started for {username}"}
 
 @app.post("/stop-bot")
-def stop(data: dict):
+def api_stop_bot(data: dict):
     username = data.get("username")
+
+    if not username:
+        raise HTTPException(status_code=400, detail="Username required")
+
     stop_bot(username)
-    return {"message": "Bot stopped"}
+
+    return {"message": f"Bot stopped for {username}"}
